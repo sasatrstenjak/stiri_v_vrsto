@@ -26,7 +26,7 @@ class Gui():
 
         self.plosca = tkinter.Canvas(master, width = 7*Gui.VELIKOST_POLJA, height = 7*Gui.VELIKOST_POLJA)
         self.plosca.grid(row = 1, column = 0)
-
+#komentar
          
 
         self.narisi_polje()
