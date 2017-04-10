@@ -1,3 +1,5 @@
+from stiri_v_vrsto1 import *
+
 MODRI = "M"
 RDECI = "R"
 NEODLOCENO = "neodločeno"
@@ -15,6 +17,8 @@ def nasprotnik(igralec):
 
 class Igra():
     def __init__(self):
+
+
         #sestavi se matrika z vrednostmi stolpcev
         #0 pomeni, da je polje prazno
         #Prvi element v seznamu (seznama) predstavlja najvišje polje v stolpcu
@@ -80,7 +84,7 @@ class Igra():
         poteze = []
         for i in range(7):
             for j in range(6):
-                if self.stolpci[i][j] == 0:
+                if self.stolpci[i][0] == 0:
                     poteze.append((i,j))
         return poteze
 
@@ -88,6 +92,7 @@ class Igra():
     def povleci_potezo(self, p):
         """Povleci potezo p, ne naredi nič, če je neveljavna.
            Vrne stanje_igre() po potezi ali None, ce je poteza neveljavna."""
+
         (i,j) = p
         if self.stolpci[i][0] != 0 or (self.na_potezi == None):
              #neveljavna poteza
@@ -100,6 +105,7 @@ class Igra():
                 self.na_potezi = nasprotnik(self.na_potezi)
             else:
                 # Igre je konec
+
                 self.na_potezi = None
             return (zmagovalec, stirica)
     
@@ -117,7 +123,8 @@ class Igra():
             p = self.stolpci[j1][i1]
             if p != 0 and p == self.stolpci[j2][i2] == self.stolpci[j3][i3] == self.stolpci[j4][i4]:
                 # Našli smo zmagovalno stirico
-                return (p, (t[0], t[1], t[2], t[3]))
+                #self.Gui.plosca.create_line(i1*100 + 0.5*self.Gui.VELIKOST_POLJA, j1*100 + 0.5*self.Gui.VELIKOST_POLJA, i4*100 + 0.5*self.Gui.VELIKOST_POLJA, j4*100 + 0.5*self.Gui.VELIKOST_POLJA)
+                return (p, (stirica[0], stirica[1], stirica[2], stirica[3]))
     
         # Ni zmagovalca, ali je igre konec?
         for i in range(7):

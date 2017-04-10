@@ -55,8 +55,15 @@ class Gui():
         self.modri.igraj()
 
 
-    def koncaj_igro(self):
-        self.napis.set("Konec igre!")
+    def koncaj_igro(self, zmagovalec, stirica):
+        if zmagovalec == MODRI:
+            self.napis.set("Zmagal je MODRI.")
+            #self.narisi_zmagovalno_trojico(zmagovalec, trojka)
+        elif zmagovalec == RDECI:
+            self.napis.set("Zmagal je RDECI.")
+            #self.narisi_zmagovalno_trojico(zmagovalec, trojka)
+        else:
+            self.napis.set("Neodločeno.")
 
     def prekini_igralce(self):
         """Sporoči igralcem, da morajo nehati razmišljati."""
@@ -136,24 +143,34 @@ class Gui():
             pass
 
     def povleci_potezo(self, p):
-        """Povleci potezo p, če je veljavna. Če ni veljavna, ne naredi nič."""
-        # Najprej povlečemo potezo v igri, še pred tem si zapomnimo, kdo jo je povlekel
-        # (ker bo self.igra.povleci_potezo spremenil stanje igre).
-        # GUI se *ne* ukvarja z logiko igre, zato ne preverja, ali je poteza veljavna.
-        # Ta del bo kasneje za njega opravil self.igra.
-        igralec = self.igra.na_potezi
+
+       # igralec = self.igra.na_potezi
+
         self.igra.povleci_potezo(p)
         self.stevec_polj = 0 #ta stevec šteje koliko polj v stolcpu je že zasedenih
         self.y = 6*Gui.VELIKOST_POLJA
-        if igralec == MODRI:
-            self.narisi_modri(p)
-        elif igralec == RDECI:
-            self.narisi_rdeci(p)
-        # Popravimo napis, kdo je na potezi
-        self.napis.set("Na potezi je {0}".format(
-            'MODRI' if self.igra.na_potezi == MODRI else 'RDECI'))
+        r = self.igra.povleci_potezo(p)
+        if r is None:
+            # Poteza ni bila veljavna, nič se ni spremenilo
+            pass
+        else:
+            if self.igra.na_potezi == MODRI:
+                self.narisi_modri(p)
+            elif self.igra.na_potezi == RDECI:
+                self.narisi_rdeci(p)
+            (zmagovalec, stirica) = r
+            if zmagovalec == NI_KONEC:
+                if self.igra.na_potezi == MODRI:
+                    self.napis.set("Na potezi je MODRI.")
+                    self.modri.igraj()
+                elif self.igra.na_potezi == RDECI:
+                    self.napis.set("Na potezi je RDECI.")
+                    self.rdeci.igraj()
+            else:
+                # Igre je konec, koncaj
+                self.koncaj_igro(zmagovalec, stirica)
 
-    
+
 
 if __name__ == "__main__":
     root = tkinter.Tk()
