@@ -87,7 +87,7 @@ class Igra():
                 if self.stolpci[i][0] == 0:
                     poteze.append((i,j))
         return poteze
-
+#komentar
 
     def povleci_potezo(self, p):
         """Povleci potezo p, ne naredi nič, če je neveljavna.
