@@ -84,10 +84,9 @@ class Igra():
         poteze = []
         for i in range(7):
             for j in range(6):
-                if self.stolpci[i][0] == 0:
+                if self.stolpci[i][j] == 0:
                     poteze.append((i,j))
         return poteze
-#komentar
 
     def povleci_potezo(self, p):
         """Povleci potezo p, ne naredi nič, če je neveljavna.
@@ -105,7 +104,6 @@ class Igra():
                 self.na_potezi = nasprotnik(self.na_potezi)
             else:
                 # Igre je konec
-
                 self.na_potezi = None
             return (zmagovalec, stirica)
     

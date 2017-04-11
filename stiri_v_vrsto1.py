@@ -3,10 +3,20 @@ import tkinter
 from razred_igra import *
 from razred_clovek import *
 
+def nasprotnik(igralec):
+    """Vrni nasprotnika od igralca."""
+    if igralec == RDECI:
+        return MODRI
+    elif igralec == MODRI:
+        return RDECI
+    else:
+
+        assert False, "neveljaven nasprotnik"
+
 class Gui():
     TAG_ZETON = "zeton"
     TAG_OKVIR = "okvir"
-    VELIKOST_POLJA = 80
+    VELIKOST_POLJA = 50
 
     def __init__(self, master):
 
@@ -26,7 +36,6 @@ class Gui():
 
         self.plosca = tkinter.Canvas(master, width = 7*Gui.VELIKOST_POLJA, height = 7*Gui.VELIKOST_POLJA)
         self.plosca.grid(row = 1, column = 0)
-#komentar
          
 
         self.narisi_polje()
@@ -40,7 +49,6 @@ class Gui():
 
     def nova_igra(self):
         self.plosca.delete(Gui.TAG_ZETON)
-            
         #prekinemo igralce
         self.prekini_igralce()
         # Nastavimo igralce
@@ -56,11 +64,14 @@ class Gui():
 
 
     def koncaj_igro(self, zmagovalec, stirica):
+        print(stirica)
         if zmagovalec == MODRI:
             self.napis.set("Zmagal je MODRI.")
+            self.obkrozi_zmagovalno_stirico(zmagovalec, stirica)
             #self.narisi_zmagovalno_trojico(zmagovalec, trojka)
         elif zmagovalec == RDECI:
             self.napis.set("Zmagal je RDECI.")
+            self.obkrozi_zmagovalno_stirico(zmagovalec, stirica)
             #self.narisi_zmagovalno_trojico(zmagovalec, trojka)
         else:
             self.napis.set("Neodločeno.")
@@ -78,12 +89,12 @@ class Gui():
     def narisi_polje(self):
         self.plosca.delete(Gui.TAG_OKVIR)
         d = Gui.VELIKOST_POLJA
-        self.plosca.create_line(0.02*d, d, 0.02*d, 7*d, tag = Gui.TAG_OKVIR)
-        
-        for i in range (1,9): #navpicne crte
-            self.plosca.create_line(i*d, d, i*d, 7*d, tag = Gui.TAG_OKVIR)
-        for j in range(1,8):#vodoravne crte
-            self.plosca.create_line(0, j*d, 7*d, j*d, tag = Gui.TAG_OKVIR)
+        self.plosca.create_line(0.03 * d, d, 0.03*d, 7 * d, tag = Gui.TAG_OKVIR)
+
+        for i in range(1, 9):  # navpicne crte
+            self.plosca.create_line(i * (d-(0.03%7)), (d-(0.03%7)), i * (d-(0.03%7)), 7 * (d-(0.03%7)), tag=Gui.TAG_OKVIR) #vzamemo (d-(0.03%7)), zato da se celo polje vidi
+        for j in range(1, 8):  # vodoravne crte
+            self.plosca.create_line(0.03, j * (d-(0.03%7)), 7 * (d-(0.03%7)), j * (d-(0.03%7)), tag=Gui.TAG_OKVIR)
 
     def narisi_modri(self, p):
         #narise moder krogec v polje (i,j)
@@ -122,7 +133,27 @@ class Gui():
                 
         print (self.igra.stolpci)
 
-        
+    def obkrozi_zmagovalno_stirico(self, zmagovalec, stirica):
+        d = Gui.VELIKOST_POLJA
+        (i1, j1) = stirica[0]
+        (i2, j2) = stirica[1]
+        (i3, j3) = stirica[2]
+        (i4, j4) = stirica[3]
+        barva = "red"
+        if zmagovalec == MODRI:
+            barva = "blue"
+        if j1==j2==j3==j4: #v primeru, da je zmagal s stolpcem
+            self.plosca.create_rectangle(j1 * d, (i1+1) * d, (j1+1) * d, (i4 + 2) * d, width=5, fill = barva, tag = Gui.TAG_ZETON) #Zakaj ne dela z drugim tagom?
+        elif i1==i1==i3==i4:
+            self.plosca.create_rectangle(j1 * d, (i1+2) * d, (j4+1) * d, (i1+1) * d, width=5, outline = barva, tag = Gui.TAG_ZETON)
+        else:
+            self.plosca.create_rectangle(j1 * d, (i1 + 1) * d, (j1 + 1) * d, (i1 + 2) * d, width=5, outline=barva, tag=Gui.TAG_ZETON)
+            self.plosca.create_rectangle(j2 * d, (i2 + 1) * d, (j2 + 1) * d, (i2 + 2) * d, width=5, outline=barva, tag=Gui.TAG_ZETON)
+            self.plosca.create_rectangle(j3 * d, (i3 + 1) * d, (j3 + 1) * d, (i3 + 2) * d, width=5, outline=barva, tag=Gui.TAG_ZETON)
+            self.plosca.create_rectangle(j4 * d, (i4 + 1) * d, (j4 + 1) * d, (i4 + 2) * d, width=5, outline=barva, tag=Gui.TAG_ZETON)
+
+
+
     def plosca_klik(self, event):
         """Obdelaj klik na ploščo."""
         # Tistemu, ki je na potezi, povemo, da je uporabnik kliknil na ploščo.
@@ -144,28 +175,35 @@ class Gui():
 
     def povleci_potezo(self, p):
 
-       # igralec = self.igra.na_potezi
+        igralec = self.igra.na_potezi
 
-        self.igra.povleci_potezo(p)
+        r = self.igra.povleci_potezo(p)
         self.stevec_polj = 0 #ta stevec šteje koliko polj v stolcpu je že zasedenih
         self.y = 6*Gui.VELIKOST_POLJA
-        r = self.igra.povleci_potezo(p)
+
+
         if r is None:
             # Poteza ni bila veljavna, nič se ni spremenilo
             pass
         else:
-            if self.igra.na_potezi == MODRI:
+            if igralec == MODRI:
                 self.narisi_modri(p)
-            elif self.igra.na_potezi == RDECI:
+            elif igralec == RDECI:
                 self.narisi_rdeci(p)
+
             (zmagovalec, stirica) = r
+
             if zmagovalec == NI_KONEC:
-                if self.igra.na_potezi == MODRI:
-                    self.napis.set("Na potezi je MODRI.")
-                    self.modri.igraj()
-                elif self.igra.na_potezi == RDECI:
+                if igralec == MODRI:
                     self.napis.set("Na potezi je RDECI.")
+                    self.modri.igraj()
+
+
+                elif igralec == RDECI:
+                    self.napis.set("Na potezi je MODRI.")
                     self.rdeci.igraj()
+
+
             else:
                 # Igre je konec, koncaj
                 self.koncaj_igro(zmagovalec, stirica)
