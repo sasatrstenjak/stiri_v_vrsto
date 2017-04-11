@@ -142,6 +142,7 @@ class Gui():
 
     def obkrozi_zmagovalno_stirico(self, zmagovalec, stirica):
         d = Gui.VELIKOST_POLJA
+        r = Gui.ODMIK
         barva = "red"
 
         (i1, j1) = stirica[0]
@@ -152,7 +153,7 @@ class Gui():
         if zmagovalec == MODRI:
             barva = "blue"
         if j1==j2==j3==j4: #v primeru, da je zmagal s stolpcem
-            self.plosca.create_rectangle(j1 * d + Gui.ODMIK, (i1+1) * d, (j1+1) * d + Gui.ODMIK, (i4 + 2) * d, width=5, outline = barva, tag = Gui.TAG_FIGURA) #Zakaj ne dela z drugim tagom?
+            self.plosca.create_rectangle((j1+r)* d, (i1+1) * d, (j1+1+r) * d + Gui.ODMIK, (i4 + 2) * d, width=5, outline = barva, tag = Gui.TAG_FIGURA) #Zakaj ne dela z drugim tagom?
         elif i1==i1==i3==i4:
             self.plosca.create_rectangle(j1 * d, (i1+2) * d, (j4+1) * d, (i1+1) * d, width=5, outline = barva, tag = Gui.TAG_FIGURA)
         else:
@@ -167,7 +168,7 @@ class Gui():
         """Obdelaj klik na ploščo."""
         # Tistemu, ki je na potezi, povemo, da je uporabnik kliknil na ploščo.
         # Podamo mu potezo p.
-        i = event.x // Gui.VELIKOST_POLJA
+        i = Int((event.x - Gui.ODMIK * Gui.VELIKOST_POLJA) // Gui.VELIKOST_POLJA)
         j = event.y // Gui.VELIKOST_POLJA
         if self.igra.stolpci[i][0] == 0: #to zagotovi, da še so vsa polja v nekem stolpcu že polna, se ne zgodi nič
             print ("Klik na ({0}, {1}), polje ({2}, {3})".format(event.x, event.y, i, j))
