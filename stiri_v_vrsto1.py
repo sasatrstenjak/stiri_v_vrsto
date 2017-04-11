@@ -153,7 +153,7 @@ class Gui():
             self.plosca.create_rectangle(j4 * d, (i4 + 1) * d, (j4 + 1) * d, (i4 + 2) * d, width=5, outline=barva, tag=Gui.TAG_ZETON)
 
 
-
+#
     def plosca_klik(self, event):
         """Obdelaj klik na ploščo."""
         # Tistemu, ki je na potezi, povemo, da je uporabnik kliknil na ploščo.
