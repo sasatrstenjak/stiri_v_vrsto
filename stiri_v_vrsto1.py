@@ -2,6 +2,7 @@ import tkinter
 
 from razred_igra import *
 from razred_clovek import *
+from razred_racunalnik import *
 
 def nasprotnik(igralec):
     """Vrni nasprotnika od igralca."""
@@ -14,9 +15,10 @@ def nasprotnik(igralec):
         assert False, "neveljaven nasprotnik"
 
 class Gui():
-    TAG_ZETON = "zeton"
+    TAG_FIGURA = "figura"
     TAG_OKVIR = "okvir"
     VELIKOST_POLJA = 50
+    ODMIK = 0.25
 
     def __init__(self, master):
 
@@ -34,7 +36,7 @@ class Gui():
         podmenu.add_command(label = "Nova igra", command = self.nova_igra)
         
 
-        self.plosca = tkinter.Canvas(master, width = 7*Gui.VELIKOST_POLJA, height = 7*Gui.VELIKOST_POLJA)
+        self.plosca = tkinter.Canvas(master, width = 7.5*Gui.VELIKOST_POLJA, height = 7.5*Gui.VELIKOST_POLJA)
         self.plosca.grid(row = 1, column = 0)
          
 
@@ -48,14 +50,14 @@ class Gui():
         self.nova_igra()
 
     def nova_igra(self):
-        self.plosca.delete(Gui.TAG_ZETON)
+        self.plosca.delete(Gui.TAG_FIGURA)
         #prekinemo igralce
         self.prekini_igralce()
         # Nastavimo igralce
         self.rdeci = Clovek(self)
         self.modri = Clovek(self)
         # Pobrišemo vse figure s polja
-        self.plosca.delete(Gui.TAG_ZETON)
+        self.plosca.delete(Gui.TAG_FIGURA)
         # Ustvarimo novo igro
         self.igra = Igra()
         # Modri je prvi na potezi
@@ -89,68 +91,75 @@ class Gui():
     def narisi_polje(self):
         self.plosca.delete(Gui.TAG_OKVIR)
         d = Gui.VELIKOST_POLJA
-        self.plosca.create_line(0.03 * d, d, 0.03*d, 7 * d, tag = Gui.TAG_OKVIR)
+        self.plosca.create_line(Gui.ODMIK * d, d, Gui.ODMIK*d, 7 * d, tag = Gui.TAG_OKVIR)
 
         for i in range(1, 9):  # navpicne crte
-            self.plosca.create_line(i * (d-(0.03%7)), (d-(0.03%7)), i * (d-(0.03%7)), 7 * (d-(0.03%7)), tag=Gui.TAG_OKVIR) #vzamemo (d-(0.03%7)), zato da se celo polje vidi
+            self.plosca.create_line((i+Gui.ODMIK)*d, (d-(Gui.ODMIK)), (i+Gui.ODMIK) *d, 7 * (d-(Gui.ODMIK)), tag=Gui.TAG_OKVIR)
         for j in range(1, 8):  # vodoravne crte
-            self.plosca.create_line(0.03, j * (d-(0.03%7)), 7 * (d-(0.03%7)), j * (d-(0.03%7)), tag=Gui.TAG_OKVIR)
+            self.plosca.create_line(Gui.ODMIK*d, j * (d-(Gui.ODMIK)), 7*d+Gui.ODMIK * d, j * (d-Gui.ODMIK), tag=Gui.TAG_OKVIR)
 
     def narisi_modri(self, p):
         #narise moder krogec v polje (i,j)
-        x = p[0]*Gui.VELIKOST_POLJA
+        x = p[0] * Gui.VELIKOST_POLJA
         sirina = 3
-        d1 = 5
+        d1 = Gui.VELIKOST_POLJA / 10
         d2 = Gui.VELIKOST_POLJA - d1
 
-        for i in range (1,7):
-            if self.igra.stolpci[x//Gui.VELIKOST_POLJA][6-i]!= 0:
+        for i in range(1, 7):
+            if self.igra.stolpci[x // Gui.VELIKOST_POLJA][6 - i] != 0:
                 self.y -= Gui.VELIKOST_POLJA
                 self.stevec_polj += 1
             else:
-                self.igra.stolpci[x//Gui.VELIKOST_POLJA][5 - self.stevec_polj] = "M"
-                self.plosca.create_oval(x+d1, self.y+d1, x+d2, self.y+d2, width=sirina, tag=Gui.TAG_ZETON, fill = "blue")
+                self.igra.stolpci[x // Gui.VELIKOST_POLJA][5 - self.stevec_polj] = "M"
+                self.plosca.create_oval(x + d1 + Gui.VELIKOST_POLJA * Gui.ODMIK, self.y + d1,
+                                        x + d2 + Gui.VELIKOST_POLJA * Gui.ODMIK, self.y + d2, width=sirina,
+                                        tag=Gui.TAG_FIGURA,
+                                        fill="blue")
                 break
-                
+
         print (self.igra.stolpci)
     
     def narisi_rdeci(self, p):
-        #narise rdec krogec v polje (i,j)
-        x = p[0]*Gui.VELIKOST_POLJA
+        # narise rdec krogec v polje (i,j)
+        x = p[0] * Gui.VELIKOST_POLJA
         sirina = 3
-
-        d1 = 5
+        d1 = Gui.VELIKOST_POLJA / 10
         d2 = Gui.VELIKOST_POLJA - d1
-        
-        for i in range (1,7):
-            if self.igra.stolpci[x//Gui.VELIKOST_POLJA][6-i]!= 0:
-                self.y-= Gui.VELIKOST_POLJA
-                self.stevec_polj +=1
+
+
+        for i in range(1, 7):
+            if self.igra.stolpci[x // Gui.VELIKOST_POLJA][6 - i] != 0:
+                self.y -= Gui.VELIKOST_POLJA
+                self.stevec_polj += 1
             else:
-                self.igra.stolpci[x//Gui.VELIKOST_POLJA][5 - self.stevec_polj] = "R"
-                self.plosca.create_oval(x+d1, self.y+d1, x+d2, self.y+d2, width=sirina, tag=Gui.TAG_ZETON, fill = "red")
+                self.igra.stolpci[x // Gui.VELIKOST_POLJA][5 - self.stevec_polj] = "R"
+                self.plosca.create_oval(x + d1 + Gui.VELIKOST_POLJA*Gui.ODMIK, self.y + d1, x + d2 +Gui.VELIKOST_POLJA*Gui.ODMIK, self.y + d2, width=sirina,
+                                        tag=Gui.TAG_FIGURA,
+                                        fill="red")
                 break
                 
         print (self.igra.stolpci)
 
     def obkrozi_zmagovalno_stirico(self, zmagovalec, stirica):
         d = Gui.VELIKOST_POLJA
+        barva = "red"
+
         (i1, j1) = stirica[0]
         (i2, j2) = stirica[1]
         (i3, j3) = stirica[2]
         (i4, j4) = stirica[3]
-        barva = "red"
+
         if zmagovalec == MODRI:
             barva = "blue"
         if j1==j2==j3==j4: #v primeru, da je zmagal s stolpcem
-            self.plosca.create_rectangle(j1 * d, (i1+1) * d, (j1+1) * d, (i4 + 2) * d, width=5, fill = barva, tag = Gui.TAG_ZETON) #Zakaj ne dela z drugim tagom?
+            self.plosca.create_rectangle(j1 * d + Gui.ODMIK, (i1+1) * d, (j1+1) * d + Gui.ODMIK, (i4 + 2) * d, width=5, outline = barva, tag = Gui.TAG_FIGURA) #Zakaj ne dela z drugim tagom?
         elif i1==i1==i3==i4:
-            self.plosca.create_rectangle(j1 * d, (i1+2) * d, (j4+1) * d, (i1+1) * d, width=5, outline = barva, tag = Gui.TAG_ZETON)
+            self.plosca.create_rectangle(j1 * d, (i1+2) * d, (j4+1) * d, (i1+1) * d, width=5, outline = barva, tag = Gui.TAG_FIGURA)
         else:
-            self.plosca.create_rectangle(j1 * d, (i1 + 1) * d, (j1 + 1) * d, (i1 + 2) * d, width=5, outline=barva, tag=Gui.TAG_ZETON)
-            self.plosca.create_rectangle(j2 * d, (i2 + 1) * d, (j2 + 1) * d, (i2 + 2) * d, width=5, outline=barva, tag=Gui.TAG_ZETON)
-            self.plosca.create_rectangle(j3 * d, (i3 + 1) * d, (j3 + 1) * d, (i3 + 2) * d, width=5, outline=barva, tag=Gui.TAG_ZETON)
-            self.plosca.create_rectangle(j4 * d, (i4 + 1) * d, (j4 + 1) * d, (i4 + 2) * d, width=5, outline=barva, tag=Gui.TAG_ZETON)
+            self.plosca.create_rectangle(j1 * d, (i1 + 1) * d, (j1 + 1) * d, (i1 + 2) * d, width=5, outline=barva, tag=Gui.TAG_FIGURA)
+            self.plosca.create_rectangle(j2 * d, (i2 + 1) * d, (j2 + 1) * d, (i2 + 2) * d, width=5, outline=barva, tag=Gui.TAG_FIGURA)
+            self.plosca.create_rectangle(j3 * d, (i3 + 1) * d, (j3 + 1) * d, (i3 + 2) * d, width=5, outline=barva, tag=Gui.TAG_FIGURA)
+            self.plosca.create_rectangle(j4 * d, (i4 + 1) * d, (j4 + 1) * d, (i4 + 2) * d, width=5, outline=barva, tag=Gui.TAG_FIGURA)
 
 
 #
