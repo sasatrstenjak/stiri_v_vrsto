@@ -45,7 +45,7 @@ class Gui():
         self.plosca.bind("<Button-1>", self.plosca_klik)
 
         self.napis = tkinter.StringVar(master, value = "Igra 4 v vrsto se je pričela!")
-        tkinter.Label(master, textvariable = self.napis).grid(row = 0, column = 0)
+        tkinter.Label(master, textvariable = self.napis, font = ("Fixedsys",20)).grid(row = 0, column = 0)
 
         self.nova_igra()
 
@@ -91,11 +91,11 @@ class Gui():
     def narisi_polje(self):
         self.plosca.delete(Gui.TAG_OKVIR)
         d = Gui.VELIKOST_POLJA
-        #self.plosca.create_line(Gui.ODMIK * d, d, Gui.ODMIK*d, 7 * d, tag = Gui.TAG_OKVIR)
 
-        for i in range(0, 8):  # navpicne crte
+        self.plosca.create_rectangle(Gui.ODMIK*d, Gui.ODMIK*d, (7+Gui.ODMIK)*d, (6+Gui.ODMIK)*d, tag = Gui.TAG_OKVIR, width = 1.5)
+        for i in range(1, 7):  # navpicne crte
             self.plosca.create_line((i+Gui.ODMIK)*d, (Gui.ODMIK)*d, (i+Gui.ODMIK) *d, (6+Gui.ODMIK)*d, tag=Gui.TAG_OKVIR)
-        for j in range(0, 7):  # vodoravne crte
+        for j in range(1, 6):  # vodoravne crte
             self.plosca.create_line(Gui.ODMIK*d, (Gui.ODMIK + j)*d, (7+Gui.ODMIK)*d, (Gui.ODMIK+j)*d, tag=Gui.TAG_OKVIR)
 
     def narisi_modri(self, p):
@@ -218,7 +218,7 @@ class Gui():
                     pass
                 else:
                     self.koncaj_igro(novi_zmagovalec, nova_stirica)
-        
+
 
 
 
