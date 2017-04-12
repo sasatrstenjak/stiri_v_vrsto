@@ -70,11 +70,11 @@ class Gui():
         if zmagovalec == MODRI:
             self.napis.set("Zmagal je MODRI.")
             self.obkrozi_zmagovalno_stirico(zmagovalec, stirica)
-            #self.narisi_zmagovalno_trojico(zmagovalec, trojka)
+
         elif zmagovalec == RDECI:
             self.napis.set("Zmagal je RDECI.")
             self.obkrozi_zmagovalno_stirico(zmagovalec, stirica)
-            #self.narisi_zmagovalno_trojico(zmagovalec, trojka)
+
         else:
             self.napis.set("Neodločeno.")
 
@@ -154,9 +154,9 @@ class Gui():
             barva = "navy"
         if j1==j2==j3==j4: #v primeru, da je zmagal s stolpcem
             self.plosca.create_rectangle((j1+r)* d, (i1+r) * d, (j1+1+r) * d , (i4 + 1+r) * d, width=5, outline = barva, tag = Gui.TAG_FIGURA) #Zakaj ne dela z drugim tagom?
-        elif i1==i1==i3==i4:
+        elif i1==i1==i3==i4: #zmagal z vrstico
             self.plosca.create_rectangle((j1+r) * d, (i1+1+r) * d, (j4+1+r) * d, (i1+r) * d, width=5, outline = barva, tag = Gui.TAG_FIGURA)
-        else:
+        else: #zmagal z diagonalo
             self.plosca.create_rectangle((j1+r) * d, (i1 + r) * d, (j1 + 1+r) * d, (i1 + 1+r) * d, width=5, outline=barva, tag=Gui.TAG_FIGURA)
             self.plosca.create_rectangle((j2+r) * d, (i2 + r) * d, (j2 + 1+r) * d, (i2 + 1+r) * d, width=5, outline=barva, tag=Gui.TAG_FIGURA)
             self.plosca.create_rectangle((j3+r) * d, (i3 + r) * d, (j3 + 1+r) * d, (i3 + 1+r) * d, width=5, outline=barva, tag=Gui.TAG_FIGURA)
@@ -192,7 +192,8 @@ class Gui():
         self.y = (Gui.ODMIK + 5)*Gui.VELIKOST_POLJA
 
         (zmagovalec, stirica) = r
-
+        (novi_zmagovalec, nova_stirica) = (None, None) #to rabiva, da na koncu preveriva kaksno je novo stanje
+        
         if r is None:
             # Poteza ni bila veljavna, nič se ni spremenilo
             pass
@@ -200,17 +201,27 @@ class Gui():
         elif igralec == MODRI:
             if zmagovalec == NI_KONEC:
                 self.narisi_modri(p)
-                self.napis.set("Na potezi je RDECI.")
                 self.modri.igraj()
-            else:
-                self.koncaj_igro(zmagovalec, stirica)
+                self.napis.set("Na potezi je RDECI.")
+                (novi_zmagovalec, nova_stirica) = self.igra.stanje_igre()
+                if novi_zmagovalec == NI_KONEC:
+                    pass
+                else:
+                    self.koncaj_igro(novi_zmagovalec, nova_stirica)
         elif igralec == RDECI:
             if zmagovalec == NI_KONEC:
                 self.narisi_rdeci(p)
-                self.napis.set("Na potezi je MODRI.")
                 self.rdeci.igraj()
-            else:
-                self.koncaj_igro(zmagovalec, stirica)
+                self.napis.set("Na potezi je MODRI.")
+                (novi_zmagovalec, nova_stirica) = self.igra.stanje_igre()
+                if novi_zmagovalec == NI_KONEC:
+                    pass
+                else:
+                    self.koncaj_igro(novi_zmagovalec, nova_stirica)
+        
+
+
+
 
 
 

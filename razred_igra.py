@@ -107,6 +107,7 @@ class Igra():
                 # Igre je konec
                 self.na_potezi = None
             return (zmagovalec, stirica)
+
     
     
 
