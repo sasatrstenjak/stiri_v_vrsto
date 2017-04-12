@@ -84,8 +84,9 @@ class Igra():
         poteze = []
         for i in range(7):
             for j in range(6):
-                if self.stolpci[i][j] == 0:
-                    poteze.append((i,j))
+                if self.stolpci[i][5-j] == 0:
+                    poteze.append((i,5-j))
+                    break
         return poteze
 
     def povleci_potezo(self, p):
