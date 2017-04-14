@@ -95,6 +95,8 @@ class Igra():
         if self.stolpci[i][0] != 0 or (self.na_potezi == None):
              #neveljavna poteza
              return None
+        if i < 0 or i > 7 or j < 0: #to zagotovi, da je klik izven igralnega polja neveljaven
+            return None
         else:
             self.shrani_pozicijo()
             (zmagovalec, stirica) = self.stanje_igre()
