@@ -1,6 +1,6 @@
 import tkinter
-import argparse   # za argumente iz ukazne vrstice
-import logging    # za odpravljanje napak
+import argparse
+import logging
 
 from razred_igra import *
 from razred_clovek import *
