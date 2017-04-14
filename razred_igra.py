@@ -1,5 +1,3 @@
-from stiri_v_vrsto1 import *
-
 MODRI = "M"
 RDECI = "R"
 NEODLOCENO = "neodločeno"

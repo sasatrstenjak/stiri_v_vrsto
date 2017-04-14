@@ -140,6 +140,7 @@ class Gui():
                 
         print (self.igra.stolpci)
 
+
     def obkrozi_zmagovalno_stirico(self, zmagovalec, stirica):
         d = Gui.VELIKOST_POLJA
         r = Gui.ODMIK
