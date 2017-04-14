@@ -1,8 +1,12 @@
 import tkinter
+import argparse   # za argumente iz ukazne vrstice
+import logging    # za odpravljanje napak
 
 from razred_igra import *
 from razred_clovek import *
 from razred_racunalnik import *
+
+MINIMAX_GLOBINA = 1
 
 def nasprotnik(igralec):
     """Vrni nasprotnika od igralca."""
@@ -20,7 +24,7 @@ class Gui():
     VELIKOST_POLJA = 50
     ODMIK = 0.5
 
-    def __init__(self, master):
+    def __init__(self, master, globina):
 
         self.rdeci = None
         self.modri = None
@@ -33,7 +37,8 @@ class Gui():
 
         podmenu = tkinter.Menu(glavni_menu)
         glavni_menu.add_cascade(label = "Možnosti", menu = podmenu)
-        podmenu.add_command(label = "Nova igra", command = self.nova_igra)
+        podmenu.add_command(label = "Nova igra", command = lambda: self.nova_igra(Clovek(self),
+                                                              Racunalnik(self, Minimax(globina))))
         
 
         self.plosca = tkinter.Canvas(master, width = (7 + 2*Gui.ODMIK)*Gui.VELIKOST_POLJA, height = (6+2*Gui.ODMIK)*Gui.VELIKOST_POLJA)
@@ -47,15 +52,15 @@ class Gui():
         self.napis = tkinter.StringVar(master, value = "Igra 4 v vrsto se je pričela!")
         tkinter.Label(master, textvariable = self.napis, font = ("Fixedsys",20)).grid(row = 0, column = 0)
 
-        self.nova_igra()
+        self.nova_igra(Clovek(self), Racunalnik(self, Minimax(globina)))
 
-    def nova_igra(self):
+    def nova_igra(self, modri, rdeci):
         self.plosca.delete(Gui.TAG_FIGURA)
         #prekinemo igralce
         self.prekini_igralce()
         # Nastavimo igralce
-        self.rdeci = Clovek(self)
-        self.modri = Clovek(self)
+        self.rdeci = rdeci
+        self.modri = modri
         # Pobrišemo vse figure s polja
         self.plosca.delete(Gui.TAG_FIGURA)
         # Ustvarimo novo igro
@@ -187,7 +192,6 @@ class Gui():
     def povleci_potezo(self, p):
 
         igralec = self.igra.na_potezi
-
         r = self.igra.povleci_potezo(p)
         self.stevec_polj = 0 #ta stevec šteje koliko polj v stolcpu je že zasedenih
         self.y = (Gui.ODMIK + 5)*Gui.VELIKOST_POLJA
@@ -229,11 +233,37 @@ class Gui():
 
 
 if __name__ == "__main__":
+    # Iz ukazne vrstice poberemo globino za minimax, uporabimo
+    # modul argparse, glej https://docs.python.org/3.4/library/argparse.html
+
+    # Opišemo argumente, ki jih sprejmemo iz ukazne vrstice
+    parser = argparse.ArgumentParser(description="Igrica stiri v vrsto")
+    # Argument --globina n, s privzeto vrednostjo MINIMAX_GLOBINA
+    parser.add_argument('--globina',
+                        default=MINIMAX_GLOBINA,
+                        type=int,
+                        help='globina iskanja za minimax algoritem')
+    # Argument --debug, ki vklopi sporočila o tem, kaj se dogaja
+    parser.add_argument('--debug',
+                        action='store_true',
+                        help='vklopi sporočila o dogajanju')
+
+    # Obdelamo argumente iz ukazne vrstice
+    args = parser.parse_args()
+
+    # Vklopimo sporočila, če je uporabnik podal --debug
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG)
+
+    # Naredimo glavno okno in nastavimo ime
     root = tkinter.Tk()
-    root.title("Štiri v vrsto")
-    aplikacija = Gui(root)
+    root.title("Stiri v vrsto")
+
+    # Naredimo objekt razreda Gui in ga spravimo v spremenljivko,
+    # sicer bo Python mislil, da je objekt neuporabljen in ga bo pobrisal
+    # iz pomnilnika.
+    aplikacija = Gui(root, args.globina)
+
+    # Kontrolo prepustimo glavnemu oknu. Funkcija mainloop neha
+    # delovati, ko okno zapremo.
     root.mainloop()
-
-
-
-

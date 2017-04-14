@@ -52,7 +52,7 @@ class Minimax:
             for (i, j) in t:
                 if self.igra.stolpci[j][i] == self.jaz:
                     x += 1
-                elif self.igra.stolpci[i][j] == nasprotnik(self.jaz):
+                elif self.igra.stolpci[j][i] == nasprotnik(self.jaz):
                     y += 1
             vrednost += vrednost_stirice.get((x, y), 0)
         return vrednost
