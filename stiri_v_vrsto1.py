@@ -21,7 +21,7 @@ def nasprotnik(igralec):
 class Gui():
     TAG_FIGURA = "figura"
     TAG_OKVIR = "okvir"
-    VELIKOST_POLJA = 50
+    VELIKOST_POLJA = 60
     ODMIK = 0.5
 
     def __init__(self, master, globina):
