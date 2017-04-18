@@ -6,7 +6,7 @@ from razred_igra import *
 from razred_clovek import *
 from razred_racunalnik import *
 
-MINIMAX_GLOBINA = 1
+MINIMAX_GLOBINA = 3
 
 def nasprotnik(igralec):
     """Vrni nasprotnika od igralca."""
@@ -55,16 +55,17 @@ class Gui():
         self.nova_igra(Clovek(self), Racunalnik(self, Minimax(globina)))
 
     def nova_igra(self, modri, rdeci):
-        self.plosca.delete(Gui.TAG_FIGURA)
+        #self.plosca.delete(Gui.TAG_FIGURA)
         #prekinemo igralce
         self.prekini_igralce()
-        # Nastavimo igralce
-        self.rdeci = rdeci
-        self.modri = modri
         # Pobrišemo vse figure s polja
         self.plosca.delete(Gui.TAG_FIGURA)
         # Ustvarimo novo igro
         self.igra = Igra()
+        # Nastavimo igralce
+        self.rdeci = rdeci
+        self.modri = modri
+
         # Modri je prvi na potezi
         self.napis.set("Na potezi je MODRI.")
         self.modri.igraj()
@@ -202,8 +203,28 @@ class Gui():
         if r is None:
             # Poteza ni bila veljavna, nič se ni spremenilo
             pass
+        else:
+            # Poteza je bila veljavna, narišemo jo na zaslon
+            if igralec == MODRI:
+                self.narisi_modri(p)
+            elif igralec == RDECI:
+                self.narisi_rdeci(p)
+            # Ugotovimo, kako nadaljevati
+            (zmagovalec, stirica) = r
+            if zmagovalec == NI_KONEC:
+                # Igra se nadaljuje
+                if self.igra.na_potezi == MODRI:
+                    self.napis.set("Na potezi je MODRI.")
+                    self.modri.igraj()
+                elif self.igra.na_potezi == RDECI:
+                    self.napis.set("Na potezi je RDECI.")
+                    self.rdeci.igraj()
+            else:
+                # Igre je konec, koncaj
+                self.koncaj_igro(novi_zmagovalec, nova_stirica)
+        
 
-        elif igralec == MODRI:
+        '''elif igralec == MODRI:
             if zmagovalec == NI_KONEC:
                 self.narisi_modri(p)
                 self.modri.igraj()
@@ -222,7 +243,7 @@ class Gui():
                 if novi_zmagovalec == NI_KONEC:
                     pass
                 else:
-                    self.koncaj_igro(novi_zmagovalec, nova_stirica)
+                    self.koncaj_igro(novi_zmagovalec, nova_stirica)'''
 
 
 
