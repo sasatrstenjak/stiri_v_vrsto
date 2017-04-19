@@ -8,7 +8,7 @@ from razred_racunalnik import *
 
 MINIMAX_GLOBINA = 3
 
-def nasprotnik(igralec):
+'''def nasprotnik(igralec):
     """Vrni nasprotnika od igralca."""
     if igralec == RDECI:
         return MODRI
@@ -16,7 +16,7 @@ def nasprotnik(igralec):
         return RDECI
     else:
 
-        assert False, "neveljaven nasprotnik"
+        assert False, "neveljaven nasprotnik"'''
 
 class Gui():
     TAG_FIGURA = "figura"
@@ -196,9 +196,6 @@ class Gui():
         r = self.igra.povleci_potezo(p)
         self.stevec_polj = 0 #ta stevec šteje koliko polj v stolcpu je že zasedenih
         self.y = (Gui.ODMIK + 5)*Gui.VELIKOST_POLJA
-
-        (zmagovalec, stirica) = r
-        (novi_zmagovalec, nova_stirica) = (None, None) #to rabiva, da na koncu preveriva kaksno je novo stanje
         
         if r is None:
             # Poteza ni bila veljavna, nič se ni spremenilo
@@ -210,8 +207,9 @@ class Gui():
             elif igralec == RDECI:
                 self.narisi_rdeci(p)
             # Ugotovimo, kako nadaljevati
-            (zmagovalec, stirica) = r
-            if zmagovalec == NI_KONEC:
+            (novi_zmagovalec, nova_stirica) = self.igra.stanje_igre()
+            print (r)
+            if novi_zmagovalec == NI_KONEC:
                 # Igra se nadaljuje
                 if self.igra.na_potezi == MODRI:
                     self.napis.set("Na potezi je MODRI.")
@@ -219,32 +217,9 @@ class Gui():
                 elif self.igra.na_potezi == RDECI:
                     self.napis.set("Na potezi je RDECI.")
                     self.rdeci.igraj()
+
             else:
-                # Igre je konec, koncaj
                 self.koncaj_igro(novi_zmagovalec, nova_stirica)
-        
-
-        '''elif igralec == MODRI:
-            if zmagovalec == NI_KONEC:
-                self.narisi_modri(p)
-                self.modri.igraj()
-                self.napis.set("Na potezi je RDECI.")
-                (novi_zmagovalec, nova_stirica) = self.igra.stanje_igre()
-                if novi_zmagovalec == NI_KONEC:
-                    pass
-                else:
-                    self.koncaj_igro(novi_zmagovalec, nova_stirica)
-        elif igralec == RDECI:
-            if zmagovalec == NI_KONEC:
-                self.narisi_rdeci(p)
-                self.rdeci.igraj()
-                self.napis.set("Na potezi je MODRI.")
-                (novi_zmagovalec, nova_stirica) = self.igra.stanje_igre()
-                if novi_zmagovalec == NI_KONEC:
-                    pass
-                else:
-                    self.koncaj_igro(novi_zmagovalec, nova_stirica)'''
-
 
 
 
