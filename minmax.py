@@ -46,15 +46,17 @@ class Minimax:
             (1,0): Minimax.ZMAGA // 100000,
             (0,1): -Minimax.ZMAGA//100000}
         vrednost = 0
-        for t in self.igra.stirice:
-            x = 0  # koliko jih imam jaz v trojki t
-            y = 0  # koliko jih ima nasprotnik v trojki t
+
+        for t in self.igra.stirice_ki_vsebujejo_kako_veljavno_potezo():
+            x = 0  # koliko jih imam jaz v štirici t
+            y = 0  # koliko jih ima nasprotnik v štirici t
             for (i, j) in t:
-                if self.igra.stolpci[j][i] == self.jaz:
+                if self.igra.stolpci[i][5-j] == self.jaz:
                     x += 1
-                elif self.igra.stolpci[j][i] == nasprotnik(self.jaz):
+                elif self.igra.stolpci[i][5-j] == nasprotnik(self.jaz):
                     y += 1
             vrednost += vrednost_stirice.get((x, y), 0)
+            print (vrednost)
         return vrednost
 
     def minimax(self, globina, maksimiziramo):

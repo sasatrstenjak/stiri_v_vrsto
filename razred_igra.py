@@ -79,13 +79,23 @@ class Igra():
 
     def veljavne_poteze(self):
         """Vrni seznam veljavnih potez."""
-        poteze = []
+        veljavne_poteze = []
         for i in range(7):
             for j in range(6):
                 if self.stolpci[i][5-j] == 0:
-                    poteze.append((i,5-j))
+                    veljavne_poteze.append((i,5-j))
                     break
-        return poteze
+        print (veljavne_poteze)
+        return veljavne_poteze
+
+    def stirice_ki_vsebujejo_kako_veljavno_potezo(self):
+        self.stirice2 = []  # v tem sezanmu so vse možne štirice, ki vsebujejo kako veljavno potezo
+        for t in self.veljavne_poteze():
+            for m in self.stirice:
+                if t in m:
+                    self.stirice2.append(m)
+            print (self.stirice2)
+        return self.stirice2
 
     def povleci_potezo(self, p):
         """Povleci potezo p, ne naredi nič, če je neveljavna.
