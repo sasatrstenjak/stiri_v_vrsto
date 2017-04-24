@@ -46,7 +46,7 @@ class Minimax:
             (1,0): Minimax.ZMAGA // 100000,
             (0,1): -Minimax.ZMAGA//100000}
         vrednost = 0
-
+        #minimax ne pogleda vseh zmagovalnih štiric, ampak samo tiste, ki vsebujejo kakšno veljavno potezo
         for t in self.igra.stirice_ki_vsebujejo_kako_veljavno_potezo():
             x = 0  # koliko jih imam jaz v štirici t
             y = 0  # koliko jih ima nasprotnik v štirici t
