@@ -8,16 +8,6 @@ from razred_racunalnik import *
 
 MINIMAX_GLOBINA = 3
 
-'''def nasprotnik(igralec):
-    """Vrni nasprotnika od igralca."""
-    if igralec == RDECI:
-        return MODRI
-    elif igralec == MODRI:
-        return RDECI
-    else:
-
-        assert False, "neveljaven nasprotnik"'''
-
 class Gui():
     TAG_FIGURA = "figura"
     TAG_OKVIR = "okvir"
@@ -73,16 +63,20 @@ class Gui():
 
     def koncaj_igro(self, zmagovalec, stirica):
         print(stirica)
+        self.prekini_igralce()
         if zmagovalec == MODRI:
             self.napis.set("Zmagal je MODRI.")
             self.obkrozi_zmagovalno_stirico(zmagovalec, stirica)
+            
 
         elif zmagovalec == RDECI:
             self.napis.set("Zmagal je RDECI.")
             self.obkrozi_zmagovalno_stirico(zmagovalec, stirica)
+            
 
         else:
             self.napis.set("Neodločeno.")
+            
 
     def prekini_igralce(self):
         """Sporoči igralcem, da morajo nehati razmišljati."""
@@ -177,7 +171,8 @@ class Gui():
         # Podamo mu potezo p.
         i = int((event.x - Gui.ODMIK * Gui.VELIKOST_POLJA) // Gui.VELIKOST_POLJA)
         j = event.y // Gui.VELIKOST_POLJA
-        if self.igra.stolpci[i][0] == 0: #to zagotovi, da še so vsa polja v nekem stolpcu že polna, se ne zgodi nič
+        (novi_zmagovalec, nova_stirica) = self.igra.stanje_igre()
+        if self.igra.stolpci[i][0] == 0 and nova_stirica == None: #to zagotovi, da če so vsa polja v nekem stolpcu že polna, se ne zgodi nič
             print ("Klik na ({0}, {1}), polje ({2}, {3})".format(event.x, event.y, i, j))
             if self.igra.na_potezi == MODRI:
                 self.modri.klik((i,j))
@@ -208,7 +203,7 @@ class Gui():
                 self.narisi_rdeci(p)
             # Ugotovimo, kako nadaljevati
             (novi_zmagovalec, nova_stirica) = self.igra.stanje_igre()
-            print (r)
+            print ((novi_zmagovalec, nova_stirica))
             if novi_zmagovalec == NI_KONEC:
                 # Igra se nadaljuje
                 if self.igra.na_potezi == MODRI:
