@@ -2,6 +2,8 @@ import logging
 
 from razred_igra import MODRI, RDECI, NEODLOCENO, NI_KONEC, nasprotnik
 
+VELIKOST = 6
+
 class Minimax:
     def __init__(self, globina):
         self.globina = globina  # do katere globine iščemo?
@@ -32,10 +34,10 @@ class Minimax:
 
     def vrednost_pozicije(self):
         """Ocena vrednosti pozicije: sešteje vrednosti vseh trojk na plošči."""
-        # Slovar, ki pove, koliko so vredne posamezne trojke, kjer "(x,y) : v" pomeni:
+        # Slovar, ki pove, koliko so vredne posamezne štirke, kjer "(x,y) : v" pomeni:
         # če imamo v trojki x znakov igralca in y znakov nasprotnika (in 3-x-y praznih polj),
         # potem je taka trojka za self.jaz vredna v.
-        # Trojke, ki se ne pojavljajo v slovarju, so vredne 0.
+        # Štirke, ki se ne pojavljajo v slovarju, so vredne 0.
         vrednost_stirice = {
             (4, 0): Minimax.ZMAGA,
             (0, 4): -Minimax.ZMAGA,
@@ -43,20 +45,21 @@ class Minimax:
             (0, 3): -Minimax.ZMAGA // 100,
             (2, 0): Minimax.ZMAGA // 10000,
             (0, 2): -Minimax.ZMAGA // 10000,
-            (1,0): Minimax.ZMAGA // 100000,
-            (0,1): -Minimax.ZMAGA//100000}
+            (1, 0): Minimax.ZMAGA // 100000,
+            (0, 1): -Minimax.ZMAGA// 100000}
         vrednost = 0
-        #minimax ne pogleda vseh zmagovalnih štiric, ampak samo tiste, ki vsebujejo kakšno veljavno potezo
-        for t in self.igra.stirice_ki_vsebujejo_kako_veljavno_potezo():
+        for t in self.igra.stirice:
             x = 0  # koliko jih imam jaz v štirici t
             y = 0  # koliko jih ima nasprotnik v štirici t
             for (i, j) in t:
-                if self.igra.stolpci[i][5-j] == self.jaz:
+                # print(i,j)
+                if self.igra.stolpci[i][j] == self.jaz:
                     x += 1
-                elif self.igra.stolpci[i][5-j] == nasprotnik(self.jaz):
+                elif self.igra.stolpci[i][j] == nasprotnik(self.jaz):
                     y += 1
             vrednost += vrednost_stirice.get((x, y), 0)
-            print (vrednost)
+            # print("Stirica: {0} ima vrednost {1}".format(t, vrednost_stirice.get((x, y), 0)))
+            # print('Vrednost pozicije: {}'.format(vrednost))
         return vrednost
 
     def minimax(self, globina, maksimiziramo):
@@ -83,6 +86,7 @@ class Minimax:
                     # Maksimiziramo
                     najboljsa_poteza = None
                     vrednost_najboljse = -Minimax.NESKONCNO
+                    # print("Veljavne: {}".format(self.igra.veljavne_poteze()))
                     for p in self.igra.veljavne_poteze():
                         self.igra.povleci_potezo(p)
                         vrednost = self.minimax(globina - 1, not maksimiziramo)[1]
