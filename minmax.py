@@ -35,7 +35,7 @@ class Minimax:
     def vrednost_pozicije(self):
         """Ocena vrednosti pozicije: sešteje vrednosti vseh trojk na plošči."""
         # Slovar, ki pove, koliko so vredne posamezne štirke, kjer "(x,y) : v" pomeni:
-        # če imamo v trojki x znakov igralca in y znakov nasprotnika (in 3-x-y praznih polj),
+        # če imamo v stirici x znakov igralca in y znakov nasprotnika (in 4-x-y praznih polj),
         # potem je taka trojka za self.jaz vredna v.
         # Štirke, ki se ne pojavljajo v slovarju, so vredne 0.
         vrednost_stirice = {
@@ -52,7 +52,6 @@ class Minimax:
             x = 0  # koliko jih imam jaz v štirici t
             y = 0  # koliko jih ima nasprotnik v štirici t
             for (i, j) in t:
-                # print(i,j)
                 if self.igra.stolpci[i][j] == self.jaz:
                     x += 1
                 elif self.igra.stolpci[i][j] == nasprotnik(self.jaz):

@@ -54,7 +54,6 @@ class Igra():
         p = [self.stolpci[i][:] for i in range(7)]
         self.zgodovina.append((p, self.na_potezi))
 
-        #print (p)
 
     def kopija(self):
         k = Igra()
@@ -75,18 +74,9 @@ class Igra():
                 if self.stolpci[i][j] == 0:
                     veljavne_poteze.append((i, j))
                     break
-        # print (veljavne_poteze)
         # print("Veljavne poteze: {}".format(veljavne_poteze))
         return veljavne_poteze
 
-    # def stirice_ki_vsebujejo_kako_veljavno_potezo(self):
-    #     self.stirice2 = []  # v tem sezanmu so vse možne štirice, ki vsebujejo kako veljavno potezo
-    #     for polje in self.veljavne_poteze():
-    #         for stirica in self.stirice:
-    #             if polje in stirica:
-    #                 self.stirice2.append(stirica)
-    #         print (self.stirice2)
-    #     return self.stirice2
 
     def povleci_potezo(self, p):
         """Povleci potezo p, ne naredi nič, če je neveljavna.
@@ -99,10 +89,9 @@ class Igra():
         if i < 0 or i > 6 or j < 0: #to zagotovi, da je klik izven igralnega polja neveljaven
             return None
         else:
-            # print(i, j)
             self.shrani_pozicijo()
             j = 5
-            while j>=0:
+            while j>=0: #v matriko self.stolpci se zapiše, da je polje zasedeno
                 if self.stolpci[i][j] == 0:
                     self.stolpci[i][j] = self.na_potezi
                     break
@@ -117,7 +106,7 @@ class Igra():
                 self.na_potezi = None
             return (zmagovalec, stirica)
 
-    def stanje_igre(self): #TO JE TREBA ŠE DODELATI!!!
+    def stanje_igre(self): 
         """Ugotovi, kakšno je trenutno stanje igre. Vrne:
            - (MODRI, stirica), če je igre konec in je zmagal MODRI z dano zmagovalno stirico
            - (RDECI, stirica), če je igre konec in je zmagal RDECI z dano zmagovalno stirico
@@ -129,7 +118,6 @@ class Igra():
             p = self.stolpci[i1][j1]
             if p != 0 and p == self.stolpci[i2][j2] == self.stolpci[i3][j3] == self.stolpci[i4][j4]:
                 # Našli smo zmagovalno stirico
-                #self.Gui.plosca.create_line(i1*100 + 0.5*self.Gui.VELIKOST_POLJA, j1*100 + 0.5*self.Gui.VELIKOST_POLJA, i4*100 + 0.5*self.Gui.VELIKOST_POLJA, j4*100 + 0.5*self.Gui.VELIKOST_POLJA)
                 return (p, (stirica[0], stirica[1], stirica[2], stirica[3]))
     
         # Ni zmagovalca, ali je igre konec?

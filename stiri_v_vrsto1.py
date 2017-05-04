@@ -1,5 +1,4 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+
 import tkinter
 import argparse
 import logging
@@ -29,8 +28,12 @@ class Gui():
 
         podmenu = tkinter.Menu(glavni_menu)
         glavni_menu.add_cascade(label = "Možnosti", menu = podmenu)
-        podmenu.add_command(label = "Nova igra", command = lambda: self.nova_igra(Clovek(self),
-                                                              Racunalnik(self, Minimax(globina))))
+        podmenu.add_command(label="Človek vs Človek",
+                            command=lambda: self.nova_igra(Clovek(self), Clovek(self)))
+        podmenu.add_command(label="Človek vs Računalnik",
+                            command=lambda: self.nova_igra(Clovek(self), Racunalnik(self, Minimax(globina))))
+        podmenu.add_command(label="Računalnik vs Človek",
+                            command=lambda: self.nova_igra(Racunalnik(self, Minimax(globina)), Clovek(self)))
         
 
         self.plosca = tkinter.Canvas(master, width = (7 + 2*Gui.ODMIK)*Gui.VELIKOST_POLJA, height = (6+2*Gui.ODMIK)*Gui.VELIKOST_POLJA)
@@ -47,7 +50,6 @@ class Gui():
         self.nova_igra(Clovek(self), Racunalnik(self, Minimax(globina)))
 
     def nova_igra(self, modri, rdeci):
-        #self.plosca.delete(Gui.TAG_FIGURA)
         #prekinemo igralce
         self.prekini_igralce()
         # Pobrišemo vse figure s polja
@@ -64,7 +66,6 @@ class Gui():
 
 
     def koncaj_igro(self, zmagovalec, stirica):
-        # print(stirica)
         self.prekini_igralce()
         if zmagovalec == MODRI:
             self.napis.set("Zmagal je MODRI.")
@@ -100,25 +101,6 @@ class Gui():
         for j in range(1, 6):  # vodoravne crte
             self.plosca.create_line(Gui.ODMIK*d, (Gui.ODMIK + j)*d, (7+Gui.ODMIK)*d, (Gui.ODMIK+j)*d, tag=Gui.TAG_OKVIR)
 
-    # def narisi_modri(self, p):
-    #     #narise moder krogec v polje (i,j)
-    #     x = p[0] * Gui.VELIKOST_POLJA
-    #     sirina = 2
-    #     d1 = Gui.VELIKOST_POLJA / 10
-    #     d2 = Gui.VELIKOST_POLJA - d1
-
-    #     for i in range(1, 7):
-    #         if self.igra.stolpci[x // Gui.VELIKOST_POLJA][i] != 0:
-    #             self.y -= Gui.VELIKOST_POLJA
-    #             self.stevec_polj += 1
-    #         else:
-    #             self.igra.stolpci[x // Gui.VELIKOST_POLJA][self.stevec_polj] = "M"
-    #             self.plosca.create_oval(x + d1 + Gui.VELIKOST_POLJA * Gui.ODMIK, self.y + d1,
-    #                                     x + d2 + Gui.VELIKOST_POLJA * Gui.ODMIK, self.y + d2, width=sirina,
-    #                                     tag=Gui.TAG_FIGURA,
-    #                                     fill="royal blue", outline = "royal blue")
-    #             break
-
     def narisi_modri(self, p):
         x = p[0] * Gui.VELIKOST_POLJA
         y= 0
@@ -130,13 +112,11 @@ class Gui():
 
         j = 5
         while j>=0:
-            print("modri {} {}".format(i,j))
             if self.igra.stolpci[i][j] == MODRI:
-                self.plosca.create_oval(x + d1 + Gui.VELIKOST_POLJA * Gui.ODMIK, 30 + j*2 * Gui.VELIKOST_POLJA * Gui.ODMIK + d1,
-                                        x + d2 + Gui.VELIKOST_POLJA * Gui.ODMIK, 30 + j*2 * Gui.VELIKOST_POLJA * Gui.ODMIK + d2, 
+                self.plosca.create_oval(x + d1 + Gui.VELIKOST_POLJA * Gui.ODMIK, 0.5*Gui.VELIKOST_POLJA + j*2 * Gui.VELIKOST_POLJA * Gui.ODMIK + d1,
+                                        x + d2 + Gui.VELIKOST_POLJA * Gui.ODMIK, 0.5*Gui.VELIKOST_POLJA + j*2 * Gui.VELIKOST_POLJA * Gui.ODMIK + d2, 
                                         width=sirina, tag=Gui.TAG_FIGURA,
                                         fill="royal blue", outline = "royal blue")
-                print("modri {} {}, breaking".format(i,j))
             j-=1
 
             
@@ -152,37 +132,11 @@ class Gui():
         j = 5
         while j>0:
             if self.igra.stolpci[i][j] == RDECI:
-                self.plosca.create_oval(x + d1 + Gui.VELIKOST_POLJA * Gui.ODMIK, 30 + j*2 * Gui.VELIKOST_POLJA * Gui.ODMIK + d1,
-                                        x + d2 + Gui.VELIKOST_POLJA * Gui.ODMIK, 30 + j*2 * Gui.VELIKOST_POLJA * Gui.ODMIK + d2, 
+                self.plosca.create_oval(x + d1 + Gui.VELIKOST_POLJA * Gui.ODMIK, 0.5*Gui.VELIKOST_POLJA + j*2 * Gui.VELIKOST_POLJA * Gui.ODMIK + d1,
+                                        x + d2 + Gui.VELIKOST_POLJA * Gui.ODMIK, 0.5*Gui.VELIKOST_POLJA + j*2 * Gui.VELIKOST_POLJA * Gui.ODMIK + d2, 
                                         width=sirina, tag=Gui.TAG_FIGURA,
                                         fill="orange red", outline = "orange red")
             j-=1
-            
-
-
-    
-    # def narisi_rdeci(self, p):
-    #     # narise rdec krogec v polje (i,j)
-    #     x = p[0] * Gui.VELIKOST_POLJA
-    #     sirina = 2
-    #     d1 = Gui.VELIKOST_POLJA / 10
-    #     d2 = Gui.VELIKOST_POLJA - d1
-
-    #     for j in range(5, )
-
-    #     for i in range(1, 7):
-    #         if self.igra.stolpci[x // Gui.VELIKOST_POLJA][i] != 0:
-    #             self.y -= Gui.VELIKOST_POLJA
-    #             self.stevec_polj += 1
-    #         else:
-    #             self.igra.stolpci[x // Gui.VELIKOST_POLJA][self.stevec_polj] = "R"
-    #             self.plosca.create_oval(x + d1 + Gui.VELIKOST_POLJA * Gui.ODMIK, self.y + d1,
-    #                                     x + d2 + Gui.VELIKOST_POLJA * Gui.ODMIK, self.y + d2, width=sirina,
-    #                                     tag=Gui.TAG_FIGURA,
-    #                                     fill="orange red", outline = "orange red")
-    #             break
-                
-    #     # print (self.igra.stolpci)
 
 
     def obkrozi_zmagovalno_stirico(self, zmagovalec, stirica):
@@ -190,10 +144,10 @@ class Gui():
         r = Gui.ODMIK
         barva = "red"
 
-        (i1, j1) = stirica[0]
-        (i2, j2) = stirica[1]
-        (i3, j3) = stirica[2]
-        (i4, j4) = stirica[3]
+        (j1, i1) = stirica[0]
+        (j2, i2) = stirica[1]
+        (j3, i3) = stirica[2]
+        (j4, i4) = stirica[3]
 
         if zmagovalec == MODRI:
             barva = "navy"
@@ -230,11 +184,10 @@ class Gui():
             pass
 
     def povleci_potezo(self, p):
-        print (self.igra.stolpci)
+        
         igralec = self.igra.na_potezi
         r = self.igra.povleci_potezo(p)
-        #self.stevec_polj = 0 #ta stevec šteje koliko polj v stolcpu je že zasedenih
-        self.y = (Gui.ODMIK + 5)*Gui.VELIKOST_POLJA
+        print (self.igra.stolpci) #preverimo, da je pravilno zapisano v self.stolpci
         
         if r is None:
             # Poteza ni bila veljavna, nič se ni spremenilo
@@ -247,7 +200,6 @@ class Gui():
                 self.narisi_rdeci(p)
             # Ugotovimo, kako nadaljevati
             (novi_zmagovalec, nova_stirica) = self.igra.stanje_igre()
-            # print ((novi_zmagovalec, nova_stirica))
             if novi_zmagovalec == NI_KONEC:
                 # Igra se nadaljuje
                 if self.igra.na_potezi == MODRI:
