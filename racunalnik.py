@@ -1,6 +1,7 @@
 import threading
 
 from minmax import *
+from alfabeta import *
 
 ######################################################################
 ## Igralec računalnik

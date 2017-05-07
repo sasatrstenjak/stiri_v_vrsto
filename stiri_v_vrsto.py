@@ -7,7 +7,7 @@ from igra import *
 from clovek import *
 from racunalnik import *
 
-MINIMAX_GLOBINA = 3
+MINIMAX_GLOBINA = 5
 
 class Gui():
     TAG_FIGURA = "figura"
@@ -31,12 +31,16 @@ class Gui():
         glavni_menu.add_cascade(label = "Možnosti", menu = podmenu)
         podmenu.add_command(label="Človek vs Človek",
                             command=lambda: self.nova_igra(Clovek(self), Clovek(self)))
-        podmenu.add_command(label="Človek vs Računalnik",
+        podmenu.add_command(label="Človek vs Računalnik (Minimax)",
                             command=lambda: self.nova_igra(Clovek(self), Racunalnik(self, Minimax(globina))))
-        podmenu.add_command(label="Računalnik vs Človek",
+        podmenu.add_command(label="Človek vs Računalnik (Alfabeta)",
+                            command=lambda: self.nova_igra(Clovek(self), Racunalnik(self, Alfabeta(globina))))
+        podmenu.add_command(label="Računalnik (Minimax) vs Človek",
                             command=lambda: self.nova_igra(Racunalnik(self, Minimax(globina)), Clovek(self)))
-        podmenu.add_command(label="Računalnik vs Računalnik",
-                            command=lambda: self.nova_igra(Racunalnik(self, Minimax(globina)), Racunalnik(self, Minimax(globina))))
+        podmenu.add_command(label="Računalnik (Alfabeta) vs Človek",
+                            command=lambda: self.nova_igra(Racunalnik(self, Alfabeta(globina)), Clovek(self)))
+        podmenu.add_command(label="Računalnik vs Računalnik (oba Alfabeta)",
+                            command=lambda: self.nova_igra(Racunalnik(self, Alfabeta(globina)), Racunalnik(self, Alfabeta(globina))))
 
 
         self.plosca = tkinter.Canvas(master, width = (7 + 2*Gui.ODMIK)*Gui.VELIKOST_POLJA, height = (6+2*Gui.ODMIK)*Gui.VELIKOST_POLJA)
