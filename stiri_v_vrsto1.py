@@ -3,11 +3,11 @@ import tkinter
 import argparse
 import logging
 
-from razred_igra import *
-from razred_clovek import *
-from razred_racunalnik import *
+from igra import *
+from clovek import *
+from racunalnik import *
 
-MINIMAX_GLOBINA = 4
+MINIMAX_GLOBINA = 3
 
 class Gui():
     TAG_FIGURA = "figura"

@@ -1,8 +1,7 @@
 import logging
+from random import shuffle
+from igra import MODRI, RDECI, NEODLOCENO, NI_KONEC, nasprotnik
 
-from razred_igra import MODRI, RDECI, NEODLOCENO, NI_KONEC, nasprotnik
-
-VELIKOST = 6
 
 class Minimax:
     def __init__(self, globina):
@@ -85,8 +84,9 @@ class Minimax:
                     # Maksimiziramo
                     najboljsa_poteza = None
                     vrednost_najboljse = -Minimax.NESKONCNO
-                    # print("Veljavne: {}".format(self.igra.veljavne_poteze()))
-                    for p in self.igra.veljavne_poteze():
+                    veljavne_poteze = self.igra.veljavne_poteze()
+                    shuffle(veljavne_poteze)    #veljavne poteze random premešamo, da ne bo računalnik v enaki sitauaciji vedno odigral enako
+                    for p in veljavne_poteze:
                         self.igra.povleci_potezo(p)
                         vrednost = self.minimax(globina - 1, not maksimiziramo)[1]
                         self.igra.razveljavi()
@@ -97,7 +97,9 @@ class Minimax:
                     # Minimiziramo
                     najboljsa_poteza = None
                     vrednost_najboljse = Minimax.NESKONCNO
-                    for p in self.igra.veljavne_poteze():
+                    veljavne_poteze = self.igra.veljavne_poteze()
+                    shuffle(veljavne_poteze)    #veljavne poteze random premešamo, da ne bo računalnik v enaki sitauaciji vedno odigral enako
+                    for p in veljavne_poteze:
                         self.igra.povleci_potezo(p)
                         vrednost = self.minimax(globina - 1, not maksimiziramo)[1]
                         self.igra.razveljavi()

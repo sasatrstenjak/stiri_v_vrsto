@@ -1,5 +1,6 @@
 MODRI = "M"
 RDECI = "R"
+PRAZNO = "0"
 NEODLOCENO = "neodločeno"
 NI_KONEC = "ni konec"
 
@@ -23,7 +24,7 @@ class Igra():
         self.stolpci = []
         i = 0
         while i < 7:
-            self.stolpci.append([0, 0, 0, 0, 0, 0])
+            self.stolpci.append([PRAZNO, PRAZNO, PRAZNO, PRAZNO, PRAZNO, PRAZNO])
             i +=1
 
         self.na_potezi = MODRI #začne modri igralec
@@ -68,7 +69,7 @@ class Igra():
 
     def veljavne_poteze(self):
         """Vrni seznam veljavnih potez."""
-        return [i for i in range(7) if self.stolpci[i][0] == 0]
+        return [i for i in range(7) if self.stolpci[i][0] == PRAZNO]
 
 
     def povleci_potezo(self, i):
@@ -78,14 +79,14 @@ class Igra():
 
         if i < 0 or i > 6: #to zagotovi, da je klik izven igralnega polja neveljaven
             return None
-        elif self.stolpci[i][0] != 0 or (self.na_potezi == None):
+        elif self.stolpci[i][0] != PRAZNO or (self.na_potezi == None):
             #neveljavna poteza
             return None
         else:
             self.shrani_pozicijo()
             j = 5
             while j >= 0: #v matriko self.stolpci se zapiše, da je polje zasedeno
-                if self.stolpci[i][j] == 0:
+                if self.stolpci[i][j] == PRAZNO:
                     self.stolpci[i][j] = self.na_potezi
                     break
                 j -= 1
@@ -109,14 +110,14 @@ class Igra():
         for stirica in self.stirice:
             [(i1,j1),(i2,j2),(i3,j3),(i4,j4)] = stirica
             p = self.stolpci[i1][j1]
-            if p != 0 and p == self.stolpci[i2][j2] == self.stolpci[i3][j3] == self.stolpci[i4][j4]:
+            if p != PRAZNO and p == self.stolpci[i2][j2] == self.stolpci[i3][j3] == self.stolpci[i4][j4]:
                 # Našli smo zmagovalno stirico
                 return (p, (stirica[0], stirica[1], stirica[2], stirica[3]))
 
         # Ni zmagovalca, ali je igre konec?
         for i in range(7):
             for j in range(6):
-                if self.stolpci[i][j] == 0:
+                if self.stolpci[i][j] == PRAZNO:
                     # Našli smo prazno polje, igre ni konec
                     return (NI_KONEC, None)
 
