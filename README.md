@@ -16,21 +16,21 @@ Igrica sestoji iz 6 datotek:
 
 - clovek.py
 
-      - Ta datoteka je potrebna za igralca človeka. Ko kliknemo na ploščo, se povleče poteza p.
+     - Ta datoteka je potrebna za igralca človeka. Ko kliknemo na ploščo, se povleče poteza p.
 
 - racunalnik.py
 
-      - Ta datoteka je potrebna, da imamo lahko računalniškega igralca. Pokliče se funkcija minimax oz alfabeta, ki izračuna najboljšo potezo za računalniškega igralca, le-ta pa jo potem odigra. Uporabi se kopija igre, ki smo jo ustvarili v razredu Igra v datoteki igra.py.
+     - Ta datoteka je potrebna, da imamo lahko računalniškega igralca. Pokliče se funkcija minimax oz alfabeta, ki izračuna najboljšo potezo za računalniškega igralca, le-ta pa jo potem odigra. Uporabi se kopija igre, ki smo jo ustvarili v razredu Igra v datoteki igra.py.
 
 - minmax.py
 
-      - V tej datoteki je algoritem, ki ga potrebuje računalnik, da izračuna, kam bo odigral potezo. Vse možne zmagovalne štirice se najprej ovrednotijo, nato pa se algoritem rekurzivno pokliče do določene globine, ki jo lahko nastavimo na vrhu datoteke stiri_v_vrsto.py.
-      - Računalnik solidno igra do globine vključno 4 (tudi 5 se še da počakati).
+     - V tej datoteki je algoritem, ki ga potrebuje računalnik, da izračuna, kam bo odigral potezo. Vse možne zmagovalne štirice se najprej ovrednotijo, nato pa se algoritem rekurzivno pokliče do določene globine, ki jo lahko nastavimo na vrhu datoteke stiri_v_vrsto.py.
+     - Računalnik solidno igra do globine vključno 4 (tudi 5 se še da počakati).
 
 - alfabeta.py
 
-      - V tej daoteki je izboljšan algoritem minimax, imenovan alfabeta, ki nam omogoča hitrejše igranje igrice na višji globini. Algoritem deluje tako, da ne analizira poteze, za katero ve, da je slabša od potez, ki jih je že analiziral. 
-      - Tukaj lahko brez problema igramo do globine vključno 6, za 7 in več pa moramo že malo počakati.  
+     - V tej daoteki je izboljšan algoritem minimax, imenovan alfabeta, ki nam omogoča hitrejše igranje igrice na višji globini. Algoritem deluje tako, da ne analizira poteze, za katero ve, da je slabša od potez, ki jih je že analiziral. 
+     - Tukaj lahko brez problema igramo do globine vključno 6, za 7 in več pa moramo že malo počakati.  
 
 
 
