@@ -5,7 +5,8 @@ Prvi projekt pri predmetu Programiranje 2 - igrica štiri v vrsto.
 Igrica sestoji iz 6 datotek:
 
 1. stiri_v_vrsto.py
-- Ta datoteka izriše igralno ploščo in poskrbi, da lahko začenmo igrati igrico. Ko se nam odpre okno, lahko v meniju možnosti izberemo način igre, tj. človek proti človeku, računalnik proti človeku (lahko izbiramo, ali naj računalnik igra po algoritmu minimax ali alfabeta), človek proti računalniku (lahko izbiramo, ali naj računalnik igra po algoritmu minimax ali alfabeta) ali pa računalnik proti računalniku (tudi tukaj lahko izbiramo, ali naj računalnik igra po algoritmu minimax ali alfabeta). Če se ne odločimo posebej za katero od možnosti, se bo odigrala igra človek proti računalniku (minimax), kjer bo človek modri igralec in računalnik rdeči. 
+
+       Ta datoteka izriše igralno ploščo in poskrbi, da lahko začenmo igrati igrico. Ko se nam odpre okno, lahko v meniju možnosti izberemo način igre, tj. človek proti človeku, računalnik proti človeku (lahko izbiramo, ali naj računalnik igra po algoritmu minimax ali alfabeta), človek proti računalniku (lahko izbiramo, ali naj računalnik igra po algoritmu minimax ali alfabeta) ali pa računalnik proti računalniku (tudi tukaj lahko izbiramo, ali naj računalnik igra po algoritmu minimax ali alfabeta). Če se ne odločimo posebej za katero od možnosti, se bo odigrala igra človek proti računalniku (minimax), kjer bo človek modri igralec in računalnik rdeči. 
 - Igralec odigra potezo tako, da klikne na stolpec v keterega želi narisati žeton, ki se bo narisal v prvo prosto vrstico v želenem stolpcu. Igra se zaključi, ko ima eden od igralcev v nekem stolpcu, vrstici ali diagonali štiri zaporedne enake žetone. Takrat se bo zmagovalna štirica obkrožila z okvirjem in igre bo konec. Za novo igro uporabik klikne možnosti (zgoraj levo) in izbere vrsto igre, ki jo želi odigrati. Če ne želi več igrati, zapre igralno okno.
 
 2. igra.py
