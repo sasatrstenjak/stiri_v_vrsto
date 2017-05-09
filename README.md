@@ -29,8 +29,8 @@ Igrica sestoji iz 6 datotek:
 
 - alfabeta.py
 
-     - V tej daoteki je izboljšan algoritem minimax, imenovan alfabeta, ki nam omogoča hitrejše igranje igrice na višji globini. Algoritem deluje tako, da ne analizira poteze, za katero ve, da je slabša od potez, ki jih je že analiziral. 
-     - Tukaj lahko brez problema igramo do globine vključno 6, za 7 in več pa moramo že malo počakati.  
+     - V tej datoteki je izboljšan algoritem minimax, imenovan alfabeta, ki nam omogoča hitrejše igranje igrice na višji globini. Algoritem deluje tako, da ne analizira poteze, za katero ve, da je slabša od potez, ki jih je že analiziral. 
+     - S tem algoritmom lahko brez problema igramo do globine vključno 6, za 7 in več pa moramo že malo počakati.  
 
 
 
