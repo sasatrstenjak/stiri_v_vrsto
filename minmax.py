@@ -2,7 +2,6 @@ import logging
 from random import shuffle
 from igra import MODRI, RDECI, NEODLOCENO, NI_KONEC, nasprotnik
 
-
 class Minimax:
     def __init__(self, globina):
         self.globina = globina  # do katere globine iščemo?
@@ -33,7 +32,7 @@ class Minimax:
     NESKONCNO = ZMAGA + 1
 
     def vrednost_pozicije(self):
-        """Ocena vrednosti pozicije: sešteje vrednosti vseh trojk na plošči."""
+        """Ocena vrednosti pozicije: sešteje vrednosti vseh štiric na plošči."""
         # Slovar, ki pove, koliko so vredne posamezne štirke, kjer "(x,y) : v" pomeni:
         # če imamo v stirici x znakov igralca in y znakov nasprotnika (in 4-x-y praznih polj),
         # potem je taka štirka za self.jaz vredna v.
@@ -49,16 +48,14 @@ class Minimax:
             (0, 1): -Minimax.ZMAGA// 100000}
         vrednost = 0
         for t in self.igra.stirice:
-            x = 0  # koliko jih imam jaz v štirici t
-            y = 0  # koliko jih ima nasprotnik v štirici t
+            x = 0  # Koliko jih imam jaz v štirici t
+            y = 0  # Koliko jih ima nasprotnik v štirici t
             for (i, j) in t:
                 if self.igra.stolpci[i][j] == self.jaz:
                     x += 1
                 elif self.igra.stolpci[i][j] == nasprotnik(self.jaz):
                     y += 1
             vrednost += vrednost_stirice.get((x, y), 0)
-            # print("Stirica: {0} ima vrednost {1}".format(t, vrednost_stirice.get((x, y), 0)))
-            # print('Vrednost pozicije: {}'.format(vrednost))
         return vrednost
 
     def minimax(self, globina, maksimiziramo):
@@ -86,7 +83,8 @@ class Minimax:
                     najboljsa_poteza = None
                     vrednost_najboljse = -Minimax.NESKONCNO
                     veljavne_poteze = self.igra.veljavne_poteze()
-                    shuffle(veljavne_poteze)    #veljavne poteze random premešamo, da ne bo računalnik v enaki sitauaciji vedno odigral enako
+                    # Veljavne poteze random premešamo, da ne bo računalnik v enaki sitauaciji vedno odigral enako
+                    shuffle(veljavne_poteze)    
                     for p in veljavne_poteze:
                         self.igra.povleci_potezo(p)
                         vrednost = self.minimax(globina - 1, not maksimiziramo)[1]
@@ -99,7 +97,8 @@ class Minimax:
                     najboljsa_poteza = None
                     vrednost_najboljse = Minimax.NESKONCNO
                     veljavne_poteze = self.igra.veljavne_poteze()
-                    shuffle(veljavne_poteze)    #veljavne poteze random premešamo, da ne bo računalnik v enaki sitauaciji vedno odigral enako
+                    # Veljavne poteze random premešamo, da ne bo računalnik v enaki sitauaciji vedno odigral enako
+                    shuffle(veljavne_poteze)
                     for p in veljavne_poteze:
                         self.igra.povleci_potezo(p)
                         vrednost = self.minimax(globina - 1, not maksimiziramo)[1]

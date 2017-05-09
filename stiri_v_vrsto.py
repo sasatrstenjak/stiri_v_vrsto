@@ -1,4 +1,3 @@
-
 import tkinter
 import argparse
 import logging
@@ -17,7 +16,6 @@ class Gui():
     ODMIK = 0.5
 
     def __init__(self, master, globina):
-
         self.rdeci = None
         self.modri = None
         self.igra = None
@@ -39,13 +37,16 @@ class Gui():
                             command=lambda: self.nova_igra(Racunalnik(self, Minimax(globina)), Clovek(self)))
         podmenu.add_command(label="Računalnik (Alfabeta) vs Človek",
                             command=lambda: self.nova_igra(Racunalnik(self, Alfabeta(globina)), Clovek(self)))
+        podmenu.add_command(label="Računalnik vs Računalnik (oba Minimax)",
+                            command=lambda: self.nova_igra(Racunalnik(self, Minimax(globina)), Racunalnik(self, Minimax(globina))))
         podmenu.add_command(label="Računalnik vs Računalnik (oba Alfabeta)",
                             command=lambda: self.nova_igra(Racunalnik(self, Alfabeta(globina)), Racunalnik(self, Alfabeta(globina))))
 
 
-        self.plosca = tkinter.Canvas(master, width = (7 + 2*Gui.ODMIK)*Gui.VELIKOST_POLJA, height = (6+2*Gui.ODMIK)*Gui.VELIKOST_POLJA)
+        self.plosca = tkinter.Canvas(master,
+                                     width = (7 + 2*Gui.ODMIK)*Gui.VELIKOST_POLJA,
+                                     height = (6+2*Gui.ODMIK)*Gui.VELIKOST_POLJA)
         self.plosca.grid(row = 1, column = 0)
-
 
         self.narisi_polje()
 
@@ -57,7 +58,7 @@ class Gui():
         self.nova_igra(Clovek(self), Racunalnik(self, Minimax(globina)))
 
     def nova_igra(self, modri, rdeci):
-        #prekinemo igralce
+        # Prekinemo igralce
         self.prekini_igralce()
         # Pobrišemo vse figure s polja
         self.plosca.delete(Gui.TAG_FIGURA)
@@ -68,27 +69,20 @@ class Gui():
         # Nastavimo igralce
         self.rdeci = rdeci
         self.modri = modri
-
         # Modri je prvi na potezi
         self.napis.set("Na potezi je MODRI.")
         self.modri.igraj()
-
 
     def koncaj_igro(self, zmagovalec, stirica):
         self.prekini_igralce()
         if zmagovalec == MODRI:
             self.napis.set("Zmagal je MODRI.")
             self.obkrozi_zmagovalno_stirico(zmagovalec, stirica)
-
-
         elif zmagovalec == RDECI:
             self.napis.set("Zmagal je RDECI.")
             self.obkrozi_zmagovalno_stirico(zmagovalec, stirica)
-
-
         else:
             self.napis.set("Neodločeno.")
-
 
     def prekini_igralce(self):
         """Sporoči igralcem, da morajo nehati razmišljati."""
@@ -99,24 +93,31 @@ class Gui():
         self.prekini_igralce()
         master.destroy()
 
-
     def narisi_polje(self):
         self.plosca.delete("all")
         d = Gui.VELIKOST_POLJA
 
-        self.plosca.create_rectangle(Gui.ODMIK*d, Gui.ODMIK*d, (7+Gui.ODMIK)*d, (6+Gui.ODMIK)*d, tag = Gui.TAG_OKVIR, width = 1.5)
-        for i in range(1, 7):  # navpicne crte
-            self.plosca.create_line((i+Gui.ODMIK)*d, (Gui.ODMIK)*d, (i+Gui.ODMIK) *d, (6+Gui.ODMIK)*d, tag=Gui.TAG_OKVIR)
-        for j in range(1, 6):  # vodoravne crte
-            self.plosca.create_line(Gui.ODMIK*d, (Gui.ODMIK + j)*d, (7+Gui.ODMIK)*d, (Gui.ODMIK+j)*d, tag=Gui.TAG_OKVIR)
+        self.plosca.create_rectangle(Gui.ODMIK * d, Gui.ODMIK * d,
+                                     (7+Gui.ODMIK) * d, (6+Gui.ODMIK) * d,
+                                     tag = Gui.TAG_OKVIR, width = 1.5)
+        for i in range(1, 7):  # Navpicne crte
+            self.plosca.create_line((i+Gui.ODMIK)*d, (Gui.ODMIK)*d,
+                                    (i+Gui.ODMIK) *d, (6+Gui.ODMIK)*d,
+                                    tag=Gui.TAG_OKVIR)
+        for j in range(1, 6):  # Vodoravne crte
+            self.plosca.create_line(Gui.ODMIK*d, (Gui.ODMIK + j)*d,
+                                    (7+Gui.ODMIK)*d, (Gui.ODMIK+j)*d,
+                                    tag=Gui.TAG_OKVIR)
 
     def narisi_figuro(self, i, j, barva):
         x = i * Gui.VELIKOST_POLJA
         sirina = 2
         d1 = Gui.VELIKOST_POLJA / 10
         d2 = Gui.VELIKOST_POLJA - d1
-        self.plosca.create_oval(x + d1 + Gui.VELIKOST_POLJA * Gui.ODMIK, 0.5*Gui.VELIKOST_POLJA + j*2 * Gui.VELIKOST_POLJA * Gui.ODMIK + d1,
-                                x + d2 + Gui.VELIKOST_POLJA * Gui.ODMIK, 0.5*Gui.VELIKOST_POLJA + j*2 * Gui.VELIKOST_POLJA * Gui.ODMIK + d2,
+        self.plosca.create_oval(x + d1 + Gui.VELIKOST_POLJA * Gui.ODMIK,
+                                0.5*Gui.VELIKOST_POLJA + j*2 * Gui.VELIKOST_POLJA * Gui.ODMIK + d1,
+                                x + d2 + Gui.VELIKOST_POLJA * Gui.ODMIK,
+                                0.5*Gui.VELIKOST_POLJA + j*2 * Gui.VELIKOST_POLJA * Gui.ODMIK + d2,
                                 width=sirina, tag=Gui.TAG_FIGURA,
                                 fill=barva, outline = barva)
 
@@ -136,22 +137,20 @@ class Gui():
         (j3, i3) = stirica[2]
         (j4, i4) = stirica[3]
 
-        if j1==j2==j3==j4: #v primeru, da je zmagal s stolpcem
-            self.plosca.create_rectangle((j1+r)* d, (i1+r) * d, (j1+1+r) * d , (i4 + 1+r) * d, width=5, outline = barva, tag = Gui.TAG_STIRICA) #Zakaj ne dela z drugim tagom?
-        elif i1==i1==i3==i4: #zmagal z vrstico
+        if j1==j2==j3==j4: # V primeru, da je zmagal s stolpcem
+            self.plosca.create_rectangle((j1+r)* d, (i1+r) * d, (j1+1+r) * d , (i4 + 1+r) * d, width=5, outline = barva, tag = Gui.TAG_STIRICA)
+        elif i1==i1==i3==i4: # V primeru, da je zmagal z vrstico
             self.plosca.create_rectangle((j1+r) * d, (i1+1+r) * d, (j4+1+r) * d, (i1+r) * d, width=5, outline = barva, tag = Gui.TAG_STIRICA)
-        else: #zmagal z diagonalo
+        else: # V primeru, da je zmagal z diagonalo
             self.plosca.create_rectangle((j1+r) * d, (i1 + r) * d, (j1 + 1+r) * d, (i1 + 1+r) * d, width=5, outline=barva, tag=Gui.TAG_STIRICA)
             self.plosca.create_rectangle((j2+r) * d, (i2 + r) * d, (j2 + 1+r) * d, (i2 + 1+r) * d, width=5, outline=barva, tag=Gui.TAG_STIRICA)
             self.plosca.create_rectangle((j3+r) * d, (i3 + r) * d, (j3 + 1+r) * d, (i3 + 1+r) * d, width=5, outline=barva, tag=Gui.TAG_STIRICA)
             self.plosca.create_rectangle((j4+r) * d, (i4 + r) * d, (j4 + 1+r) * d, (i4 + 1+r) * d, width=5, outline=barva, tag=Gui.TAG_STIRICA)
 
-
-
     def plosca_klik(self, event):
         """Obdelaj klik na ploščo."""
         # Tistemu, ki je na potezi, povemo, da je uporabnik kliknil na ploščo.
-        # Podamo mu potezo p.
+        # Podamo mu potezo i.
         i = int((event.x - Gui.ODMIK * Gui.VELIKOST_POLJA) // Gui.VELIKOST_POLJA)
         (novi_zmagovalec, nova_stirica) = self.igra.stanje_igre()
         if self.igra.na_potezi == MODRI:
@@ -164,9 +163,8 @@ class Gui():
 
     def povleci_potezo(self, i):
         """Povleci potezo v stolpcu i, če je veljavna, in jo nariši."""
-        igralec = self.igra.na_potezi # kdo bo povlekel to potezo
+        igralec = self.igra.na_potezi # Kdo bo povlekel to potezo
         r = self.igra.povleci_potezo(i)
-        # print (self.igra.stolpci) #preverimo, da je pravilno zapisano v self.stolpci
 
         if r is None:
             # Poteza ni bila veljavna, nič se ni spremenilo
@@ -192,11 +190,6 @@ class Gui():
 
             else:
                 self.koncaj_igro(stanje, zmagovalna_stirica)
-
-
-
-
-
 
 
 

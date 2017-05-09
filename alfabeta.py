@@ -2,8 +2,6 @@ import logging
 from random import shuffle
 from igra import MODRI, RDECI, NEODLOCENO, NI_KONEC, nasprotnik
 
-
-
 class Alfabeta:
     def __init__(self, globina):
         self.globina = globina  # do katere globine iščemo?
@@ -20,8 +18,11 @@ class Alfabeta:
         self.prekinitev = False
         self.jaz = self.igra.na_potezi
         self.poteza = None  # Sem napišemo potezo, ko jo najdemo
+        # Funkcijo alfabeta kličemo z začetnima argumentoma
+        # alfa = -Alfabeta.NESKONCNO (spodnja meja)
+        # in beta = Alfabeta.NESKONCNO (zgornja meja)
         (poteza, vrednost) = self.alfabeta(
-            self.globina, -Alfabeta.NESKONCNO, Alfabeta.NESKONCNO, True)    #tu smo nastavili začetni vrednosti za alfa in beta
+            self.globina, -Alfabeta.NESKONCNO, Alfabeta.NESKONCNO, True)
         self.jaz = None
         self.igra = None
 
@@ -36,7 +37,7 @@ class Alfabeta:
     NESKONCNO = ZMAGA + 1
 
     def vrednost_pozicije(self):
-        """Ocena vrednosti pozicije: sešteje vrednosti vseh trojk na plošči."""
+        """Ocena vrednosti pozicije: sešteje vrednosti vseh štiric na plošči."""
         # Slovar, ki pove, koliko so vredne posamezne štirke, kjer "(x,y) : v" pomeni:
         # če imamo v štirki x znakov igralca in y znakov nasprotnika (in 4-x-y praznih polj),
         # potem je taka štirka za self.jaz vredna v.
@@ -52,8 +53,8 @@ class Alfabeta:
             (0, 1): -Alfabeta.ZMAGA // 100000}
         vrednost = 0
         for t in self.igra.stirice:
-            x = 0  # koliko jih imam jaz v štirici t
-            y = 0  # koliko jih ima nasprotnik v štirici t
+            x = 0  # Koliko jih imam jaz v štirici t
+            y = 0  # Koliko jih ima nasprotnik v štirici t
             for (i, j) in t:
                 if self.igra.stolpci[i][j] == self.jaz:
                     x += 1
@@ -91,7 +92,7 @@ class Alfabeta:
                         self.igra.povleci_potezo(p)
                         vrednost = self.alfabeta(globina - 1, alfa, beta, not maksimiziramo)[1]
                         self.igra.razveljavi()
-                        if vrednost > alfa: #alfa je spodnja meja
+                        if vrednost > alfa:
                             alfa = vrednost
                             najboljsa_poteza = p
                         if alfa >= beta:    
@@ -106,7 +107,7 @@ class Alfabeta:
                         self.igra.povleci_potezo(p)
                         vrednost = self.alfabeta(globina - 1, alfa, beta, not maksimiziramo)[1]
                         self.igra.razveljavi()
-                        if vrednost < beta: #beta je zgornja meja
+                        if vrednost < beta:
                             beta = vrednost
                             najboljsa_poteza = p
                         if alfa >= beta:
